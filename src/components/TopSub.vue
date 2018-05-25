@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="top-sub">
 		<div class="sub-1">
 			<ul class="channels">
@@ -189,4 +189,4 @@ export default {
 	margin: 0 8px;
 	background: rgba(255,255,255,0.1);
 }
-</style>
+</style> -->

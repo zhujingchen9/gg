@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 	<div class="hot-container">
 		<goods-header :title="title"></goods-header>
 		<div class="hot-wrap">
@@ -120,4 +120,4 @@ export default {
 	}
 }
 
-</style>
+</style> -->

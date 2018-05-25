@@ -78,7 +78,7 @@ export default {
 .slide-pre {
 	display: block;
 	position: absolute;
-	left: 235px;
+	left: 90px;
 	top: 50%;
 	width: 40px;
 	height: 70px;
@@ -93,7 +93,7 @@ export default {
 .slide-next {
 	display: block;
 	position: absolute;
-	right: 0;
+	right: 90px;
 	top: 50%;
 	width: 40px;
 	height: 70px;

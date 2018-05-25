@@ -2,6 +2,7 @@
   <div id="app">
     <top-bar></top-bar>
     <top-header></top-header>
+    <xian></xian>
     <top-banner></top-banner>
     <top-sub></top-sub>
     <goods></goods>
@@ -9,16 +10,15 @@
     <play-video :play-config="playConfig"></play-video>
   </div>
 </template>
-
 <script>
 import TopBar from './components/TopBar'
 import TopHeader from './components/TopHeader'
+import xian from './components/xian'
 import TopBanner from './components/TopBanner'
 import TopSub from './components/TopSub'
 import Goods from './components/Goods'
 import TempFooter from './components/TempFooter'
 import PlayVideo from './components/common/PlayVideo'
-
 export default {
   data () {
     return {
@@ -41,6 +41,7 @@ export default {
     'top-banner': TopBanner,
     'top-sub': TopSub,
     'goods': Goods,
+    'xian': xian,
     'temp-footer': TempFooter,
     'play-video': PlayVideo
   }

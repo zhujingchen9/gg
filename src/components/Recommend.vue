@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 	<div class="recommend-container">
 		<div class="recommend-header">
 			<h2 class="title">为你推荐</h2>
@@ -190,4 +190,4 @@ export default {
 	}
 }
 
-</style>
+</style> -->

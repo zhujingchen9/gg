@@ -8,17 +8,17 @@
 					<li v-for="item in navs" class="nav">
 						<template v-if="item.type">
 							<a href="javascript: void(0);" class="nav-item"
-							@mouseenter="evtHeaderEnter(item.type)"
-							@mouseleave="evtHeaderLeave()"
-							>{{item.name}}</a>
+							><span @mouseenter="evtHeaderEnter(item.type,item.name)" >{{item.name}}</span></a>
 						</template>
 						<template v-else>
 							<a :href="item.sourceUrl" target="_blank" class="nav-item">{{item.name}}</a>
 						</template>
+						<input type="hidden" name="type" id="searchType" value="">
+						<input type="hidden" name="type" id="searchName" value="">
 					</li>
 				</ul>
 			</div>
-			<div class="header-search">
+			<div class="header-search" 	@mouseleave="evtHeaderLeave2">
 				<ul class="hot-word"
 					transition="fadeOut"
 					v-show="hotStatus">
@@ -29,148 +29,179 @@
 				</ul>
 				<input
 					@focus="evtIptFocus"
-					@blur="evtIptBlur"
-					class="search-ipt" type="search" name="search" value="">
-				<label class="search-btn" for="search">
-					<i class="icon-search"></i>
+					class="search-ipt" type="search" name="search" id="vals" value="">
+					<label  @click='searchSmall()' class="search-btn" for="search" >
+					<i class="icon-search" ></i>
 				</label>
 				<ul class="search-result clearfix">
 					<li v-for="item in results">
-						<span class="item-name">{{item.name}}</span>
+            	<a :href="www.baidu.com" @click='btnClick (item.name)' ><span>{{item.name}}</span></a>
 						<span class="item-num">约有{{item.number}}件</span>
 					</li>
 				</ul>
 			</div>
 		</div>
 		<div class="header-menu"
-			@mouseenter="evtHeaderEnter()"
 			@mouseleave="evtHeaderLeave()"
 			v-show="headerStatus"
 			transition="fadein">
 			<ul class="menus clearfix">
-				<li class="product" v-for="item in currentPhones">
-					<a :href="item.sourcePath">
-						<img :src="item.imgUrl" alt="" class="product-img"/>
-					</a>
-					<div class="product-name">{{item.name}}</div>
-					<div class="product-price">
-						{{item.price}}
-					</div>
-				</li>
+
+			<template  v-if="idStatus == 1">
+					<li class="product" v-for="item in currentPhones">
+				<a :href="item.path">
+					<img :src="item.img" alt="" class="product-img"/>
+				</a>
+				<div class="product-name">{{item.name}}</div>
+				<div class="product-price">
+				<font color="black" size="2">开始时间：</font>	{{item.time*1000 | datefmt ('YYYY-MM-DD HH:mm:ss')}}
+				</div>
+						</li>
+			</template>
+
+			<template  v-else>
+						<li class="product" style="margin-left:550px;margin-top:200px;">
+            当前{{name}}未搜索到数据
+						</li>
+			</template>
 			</ul>
 		</div>
 	</div>
+	<!-- {{idStatus}}
+	{{msg}} -->
 </template>
 
 <script>
 export default {
 	data () {
 		return {
+			msg: 222,
+			idStatus: 3,
+			searchResult: [],
+			name: '',
+			searchStatus: true,
 			hotStatus: true,
 			headerStatus: false,
 			tids: '',
 			currentPhones: this.xiaomi,
-			hotItems: ['红米pro', '小米笔记本air'],
-			xiaomi: [
-				{name: '小米Max', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/maxdingbu!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '1299元起'},
-				{name: '小米手机5', imgUrl: 'http://c1.mifile.cn/f/i/16/goods/nav/mi5!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '1499元起'},
-				{name: '小米手机4c', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/mi4c!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '1099元'}
-			],
-			red: [
-				{name: '红米pro', imgUrl: 'http://c1.mifile.cn/f/i/g/2015/cn-index/hongmipro-320!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '1499元起'},
-				{name: '红米note3', imgUrl: 'http://c1.mifile.cn/f/i/g/2015/video/hongmi3s!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '899元起'},
-				{name: '红米手机3S', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/note3!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '699元起'},
-				{name: '红米手机3', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/hongmi3!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '699元起'},
-				{name: '红米手机3X', imgUrl: 'http://c1.mifile.cn/f/i/g/doodle/320-220!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '799元'}
-			],
-			flats: [
-				{name: '小米平板2 16GB', imgUrl: 'http://c1.mifile.cn/f/i/g/2015/cn-index/hongmipro-320!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '999元'},
-				{name: '小米平板2 64GB', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/mipad2-64!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '1299元'},
-				{name: '小米平板2 64GB Windows版', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/mipad2-64-win!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '1299元'},
-				{name: '小米笔记本Air 12.5', imgUrl: 'http://c1.mifile.cn/f/i/g/2015/video/bijiben32012.5!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '3499元'},
-				{name: '小米笔记本Air 13.3', imgUrl: 'http://c1.mifile.cn/f/i/g/2015/cn-index/bijiben320!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '4999元'}
-			],
-			tv: [
-				{name: '小米电视3S 43英寸', imgUrl: 'http://c1.mifile.cn/f/i/16/goods/nav/mitv3s-43!160x110.jpg', sourcePath: 'http://www.mi.com/mitv3s/43/', price: '1499元'},
-				{name: '小米电视3S 48英寸', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/mitv3s48!160x110.jpg', sourcePath: 'http://www.mi.com/mitv3s/48/', price: '1999元'},
-				{name: '小米电视3 55英寸', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/mitv355!160x110.jpg', sourcePath: 'http://www.mi.com/mitv3/55/', price: '3299元起'},
-				{name: '小米电视3 60英寸', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/mitv3-60!160x110.jpg', sourcePath: 'http://www.mi.com/mitv3/60/', price: '3499元'},
-				{name: '小米电视3S 65英寸 曲面', imgUrl: 'http://c1.mifile.cn/f/i/16/goods/nav/mitv3s-65!160x110.jpg', sourcePath: 'http://www.mi.com/mimax/', price: '8999元'},
-				{name: '小米电视3 70英寸', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/mitv70!160x110.jpg', sourcePath: 'http://www.mi.com/mitv3/70/', price: '8999元'}
-			],
-			box: [
-				{name: '小米盒子mini版', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/hezimini.png', sourcePath: 'http://www.mi.com/hezimini/', price: '179元'},
-				{name: '小米盒子3', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/hezi3.png', sourcePath: 'http://www.mi.com/hezi3/', price: '249元'},
-				{name: '小米盒子3 增强版', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/hezi3s!160x110.jpg', sourcePath: 'http://www.mi.com/hezi3s/', price: '399元'},
-				{name: '小米电视主机', imgUrl: 'http://c1.mifile.cn/f/i/g/2015/cn-index/zhuji!160x110.jpg', sourcePath: 'http://www.mi.com/tvzj/', price: '999元'},
-				{name: '小米家庭音响 金属版', imgUrl: 'http://c1.mifile.cn/f/i/g/2015/cn-index/jinshuban!160x110.jpg', sourcePath: 'http://item.mi.com/1160800073.html', price: '899元'},
-				{name: '小米家庭音响 标准版', imgUrl: 'http://c1.mifile.cn/f/i/g/2015/cn-index/putonban!160x110.jpg', sourcePath: 'http://item.mi.com/1160800074.html', price: '699元'}
-			],
-			router: [
-				{name: '全新小米路由器', imgUrl: 'http://c1.mifile.cn/f/i/16/goods/nav/mitv3s-43!160x110.jpg', sourcePath: 'http://www.mi.com/mitv3s/43/', price: '699元起'},
-				{name: '小米路由器 3', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/miwifi-3!160x110.jpg', sourcePath: 'http://www.mi.com/miwifi3/', price: '149元'},
-				{name: '小米路由器 mini', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/miwifimini!160x110.jpg', sourcePath: 'http://www.mi.com/miwifimini/', price: '119元'},
-				{name: '小米路由器 3C', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/mitv3-60!160x110.jpg', sourcePath: 'http://www.mi.com/mitv3/60/', price: '99元'},
-				{name: '小米路由器 青春版', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/miwifilite!160x110.jpg', sourcePath: 'http://www.mi.com/miwifilite/', price: '69元'},
-				{name: '小米WiFi放大器', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/wifiExtension!160x110.jpg', sourcePath: 'http://item.mi.com/1153200003.html', price: '35元'}
-			],
-			hardware: [
-				{name: '九号平衡车', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/nav/scooter!160x110.jpg', sourcePath: 'http://www.mi.com/scooter/', price: '1999元'},
-				{name: '小米净水器', imgUrl: 'http://c1.mifile.cn/f/i/g/2015/cn-index/water2!160x110.jpg', sourcePath: 'http://www.mi.com/water/', price: '1299元起'},
-				{name: '米家压力IH电饭煲', imgUrl: 'http://c1.mifile.cn/f/i/g/2015/cn-index/dianfanbao!160x110.jpg', sourcePath: 'http://www.mi.com/dianfanbao/', price: '999元'},
-				{name: '小米空气净化器 2', imgUrl: 'http://c1.mifile.cn/f/i/16/goods/nav/air2!160x110.jpg', sourcePath: 'http://www.mi.com/air2/', price: '649元'},
-				{name: '智能摄像机', imgUrl: 'http://c1.mifile.cn/f/i/g/doodle/zhinengyingjian!160x110.jpg', sourcePath: 'http://list.mi.com/accessories/tag?id=shexiangji', price: '149元起'}
-			],
+			hotItems: ['复仇者联盟3之鬼畜', '盗墓笔记之...'],
+			weishang: [],
+			qiqu: [],
+			tanxian: [],
+			qiangqiang: [],
+			fuchou: [],
+			yingxiong: [],
+			shilian: [],
 			navs: [
-				{name: '小米手机', type: 'xiaomi'},
-				{name: '红米', type: 'red'},
-				{name: '平板 · 笔记本', type: 'flats'},
-				{name: '电视', type: 'tv'},
-				{name: '盒子 · 影音', type: 'box'},
-				{name: '路由器', type: 'router'},
-				{name: '智能硬件', type: 'hardware'},
-				{name: '服务', sourceUrl: '//www.mi.com/service/'},
-				{name: '社区', sourceUrl: 'http://www.xiaomi.cn'}
+				{name: '微商联盟', type: 'weishang'},
+				{name: '奇趣联盟', type: 'qiqu'},
+				{name: '探险者联盟', type: 'tanxian'},
+				{name: '强强联盟', type: 'qiangqiang'},
+				{name: '复仇者联盟', type: 'fuchou'},
+				{name: '英雄联盟', type: 'yingxiong'},
+				{name: '失恋阵线联盟', type: 'shilian'}
+				// {name: '服务', sourceUrl: '//www.mi.com/service/'},
+				// {name: '社区', sourceUrl: 'http://www.xiaomi.cn'}
 			],
 			results: [
-				{name: '小米手机5', number: '11'},
-				{name: '空气净化器2', number: '1'},
+				{name: '中国墙头草', number: '11'},
+				{name: '秦始皇陵记', number: '1'},
 				{name: '活塞耳机', number: '4'},
-				{name: '小米路由器', number: '8'},
-				{name: '移动电源', number: '21'},
-				{name: '运动相机', number: '3'},
-				{name: '小米摄像机', number: '2'},
-				{name: '小米体重秤', number: '1'},
-				{name: '小米插线板', number: '13'},
-				{name: '配件优惠套装', number: '32'}
+				{name: '盗墓笔记之再续前缘', number: '8'},
+				{name: '6个6的故事', number: '21'},
+				{name: '八匹狼的狂奔', number: '3'},
+				{name: '说不完的话', number: '2'},
+				{name: '从你的全世界路过', number: '1'},
+				{name: '我还能说些什么', number: '13'},
+				{name: '该与不该', number: '32'}
 			]
 		}
 	},
 	ready () {
 	},
 	methods: {
+		getCoachInfo (menuType, obj) {
+				var url = 'http://www.zhujingcheng.cn/showsmalltype/showsmalltypelist'
+				var params = {
+					type: menuType
+				}
+				var otherParam = {
+					emulateJSON: true
+				}
+				obj.$http.post(url, params, otherParam)
+				.then(function (res) {
+				this.currentPhones = res.body.data
+				this.idStatus = 1
+			}, (res) => {
+               obj.currentPhones = '网络繁忙'
+              // error callback
+          })
+    },
+		postsearch (obj, keywords, getmenuType, searchName) {
+			var url = 'http://www.zhujingcheng.cn/showsmalltype/showSmallsearch'
+			var params = {
+				type: getmenuType,
+				keywords: keywords
+			}
+			var otherParam = {
+				emulateJSON: true
+			}
+			obj.$http.post(url, params, otherParam)
+			.then(function (res) {
+				if (res.body.code === 'failed') {
+					obj.idStatus = 0
+					obj.name = searchName
+				} else {
+					obj.idStatus = 1
+					this.currentPhones = res.body.data
+				}
+		}, (res) => {
+				})
+		},
 		evtIptFocus () {
 			$('.header-search').addClass('search-active')
 			$('.search-result').show()
 			this.hotStatus = false
 		},
-		evtIptBlur () {
-			$('.header-search').removeClass('search-active')
-			$('.search-result').hide()
-			this.hotStatus = true
-		},
-		evtHeaderEnter (menuType) {
-			if (menuType) {
-				this.currentPhones = this[menuType]
-			}
+		evtHeaderEnter (menuType, name) {
+			this.$options.methods.getCoachInfo(menuType, this)
+			$('#searchType').val(menuType)
+			$('#searchName').val(name)
+			// if (menuType) {
+			// 	this.currentPhones = this[menuType]
+			// }
 			this.headerStatus = true
 			clearTimeout(this.tids)
+		},
+		evtHeaderLeave2 () {
+			$('.header-search').removeClass('search-active')
+			$('.search-result').hide()
+			var vals = $('#vals').val()
+			if (vals === '') {
+				this.hotStatus = true
+			} else {
+				this.hotStatus = false
+			}
 		},
 		evtHeaderLeave () {
 			let self = this
 			this.tids = setTimeout(function () {
 				self.headerStatus = false
 			}, 300)
+		},
+		btnClick (e) {
+			$('.header-search').removeClass('search-active')
+			$('.search-result').hide()
+			$('#vals').val(e)
+			this.hotStatus = false
+		},
+		searchSmall () {
+			var keywords = $('#vals').val()
+			var searchName = $('#searchName').val()
+			var getmenuType = $('#searchType').val()
+			var obj = this
+			this.$options.methods.postsearch(obj, keywords, getmenuType, searchName)
+			this.headerStatus = true
 		}
 	},
 	components: {
@@ -197,22 +228,22 @@ export default {
 }
 
 .icon-mi {
-	width: 55px;
-	height: 55px;
-	background: url('../assets/img/icon-mi.png') no-repeat;
+  width: 163px;
+	height: 66px;
+	background: url('../assets/img/gg.png') no-repeat;
 	background-size: 100% 100%;
 }
-
-.pic-gif {
+/* .pic-gif {
 	width: 163px;
 	height: 66px;
 	margin-left: 10px;
-	background: url('../assets/img/win.gif') no-repeat;
+	background: url('../assets/img/logo.jpg') no-repeat;
 	background-size: 100% 100%;
-}
+} */
 
-.header-navs {
+. {
 	position: relative;
+  margin-left:60px;
 }
 
 .navs {
@@ -326,7 +357,7 @@ export default {
 	padding: 0;
 	list-style: none;
 	border: 1px solid #ff6700;
-	z-index: 11;
+	z-index: 110;
 	background: #fff;
 	li {
 		padding: 7px 13px;
@@ -349,16 +380,16 @@ export default {
 .header-menu {
 	position: absolute;
 	left: 0;
-	top: 140px;
+	top: 173px;
 	width: 100%;
-	height: 230px;
+	height: 930px;
 	background: #fff;
 	box-shadow: 0 1px 5px #ccc;
 	z-index: 11;
 	.menus {
 		list-style: none;
 		margin: 0;
-		padding: 30px 0 0 150px;
+		padding: 30px 0 0 10px;
 		min-width: 1500px;
 		.product {
 			float: left;
@@ -395,10 +426,9 @@ export default {
 		}
 	}
 }
-
 .fadein-transition {
   transition: all .3s ease-in;
-	height: 230px;
+	height: 465px;
 	opacity: 1;
 	overflow: hidden;
 }

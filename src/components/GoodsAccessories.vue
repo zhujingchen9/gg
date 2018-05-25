@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 	<div class="around-container">
 		<div class="goods-top clearfix">
 			<h3 class="top-title">配件</h3>
@@ -171,4 +171,4 @@ export default {
 		}
 	}
 }
-</style>
+</style> -->

@@ -41,5 +41,6 @@ export default {
 	height: auto;
 	background: #f5f5f5;
 	padding-bottom: 40px;
+	z-index: 100000;
 }
 </style>

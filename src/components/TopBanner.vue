@@ -1,35 +1,5 @@
 <template>
 	<div class="top-banner clearfix">
-		<div class="site-category"
-			@mouseleave="evtSideLeave">
-			<div class="top-side-left">
-				<ul class="side-left">
-					<li class="side-item"
-						@mouseenter="evtSideEnter(item.type)"
-						v-for="item in sideItems">
-						{{item.content}}
-					</li>
-				</ul>
-			</div>
-			<div class="site-category-detail"
-				v-show="goodsStatus">
-				<ul class="category-items" v-for="goods in filterCurrGoods">
-					<li class="category-goods" v-for="item in goods">
-						<a class="goods-link" :href="item.sourceUrl">
-							<img :src="item.imgUrl" alt="" />
-							<div class="text-name">
-								{{item.name}}
-							</div>
-						</a>
-						<a class="goods-buy-link"
-							v-show="item.buyStatus"
-							:href="item.buyUrl">
-								选购
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
 		<slide :banners="banners"></slide>
 	</div>
 </template>
@@ -53,11 +23,11 @@ export default {
 				{type: 'bags', content: '箱包 服饰'},
 				{type: 'rabbit', content: '兔米 生活周边'}],
 			banners: [
-				{sourceUrl: '//item.mi.com/buyphone/mi5', imgUrl: 'http://i3.mifile.cn/a4/bc62a28f-de64-4eee-853b-36772a97f67e'},
-				{sourceUrl: '//item.mi.com/buyphone/hongmi3s', imgUrl: 'http://i3.mifile.cn/a4/ba4939c9-fc0a-4916-bddc-726fa00f7e9b'},
-				{sourceUrl: '//item.mi.com/buyphone/mimax', imgUrl: 'http://i3.mifile.cn/a4/9ced2c9e-f685-4918-9b2a-402af2d2039f'},
-				{sourceUrl: '//item.mi.com/buyphone/note3', imgUrl: 'http://i3.mifile.cn/a4/f4bee59d-85a5-498f-ae57-a2cabe6aeb5b'},
-				{sourceUrl: '//item.mi.com/buymitv/48', imgUrl: 'http://i3.mifile.cn/a4/98fc8a58-c35c-475e-89cb-b8fe1659817f'}
+				{sourceUrl: '#', imgUrl: 'http://www.zhujingcheng.cn/static/images/index_1.jpg'},
+				{sourceUrl: '#', imgUrl: 'http://www.zhujingcheng.cn/static/images/index_2.jpg'},
+				{sourceUrl: '#', imgUrl: 'http://www.zhujingcheng.cn/static/images/index_3.jpg'},
+				{sourceUrl: '#', imgUrl: 'http://www.zhujingcheng.cn/static/images/index_1.jpg'},
+				{sourceUrl: '#', imgUrl: 'http://www.zhujingcheng.cn/static/images/index_3.jpg'}
 			],
 			phones: [
 				{sourceUrl: '//www.mi.com/mi5/', buyUrl: '//item.mi.com/buyphone/mi5', imgUrl: 'http://c1.mifile.cn/f/i/15/goods/list/mi5bar80.jpg?width=40&height=40', name: '小米手机5', buyStatus: true},
@@ -197,7 +167,7 @@ export default {
 	position: relative;
 	width: 1226px;
 	height: auto;
-	margin: 0 auto;
+	margin: 33px auto;
 }
 .site-category {
 	position: absolute;

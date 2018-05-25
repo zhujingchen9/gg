@@ -3,24 +3,24 @@
 		<ul class="goods-right-content">
 			<template
 				v-for="goods in currGoods"
-				v-if="$index < currGoods.length - 1">
+				v-if="$index < currGoods.length">
 				<li class="goods-right-item">
 					<span class="discount-label"
 						:class="goods.discountType">{{goods.discount}}</span>
-					<a :href="goods.sourceUrl" target="_blank">
-						<img :src="goods.imgUrl" alt="" />
-						<h3 class="goods-title">{{goods.title}}</h3>
+					<a :href="goods.path" target="_blank">
+						<img :src="goods.img" alt="" />
+						<h3 class="goods-title">{{goods.name}}</h3>
 					</a>
 					<p class="goods-price">
-						{{goods.price}}元
-						<span
+						<font color="black" size="2">开始时间：</font>	{{item.time*1000 | datefmt ('YYYY-MM-DD HH:mm:ss')}}
+						<!-- <span
 							v-if="goods.discountType === 'discount'"
 							class="old-price">
 							{{goods.oldPrice}}元
-						</span>
+						</span> -->
 					</p>
 					<p class="goods-rank">
-						{{goods.heat}}人评价
+						{{goods.count}}人参与
 					</p>
 					<div
 						v-show="goods.reviewStatus"
@@ -30,37 +30,6 @@
 					</div>
 				</li>
 			</template>
-			<ul class="goods-right-small">
-				<template v-if="lastGoods">
-					<li class="item-small">
-						<a :href="lastGoods.sourceUrl" target="_blank">
-							<div class="desc">
-								<h3 class="title">
-									{{lastGoods.title}}
-								</h3>
-								<span class="price">
-									{{lastGoods.price}}元
-								</span>
-							</div>
-							<img class="small-img"
-								:src="lastGoods.imgUrl" alt="" />
-							</a>
-					</li>
-					<li class="item-small read-more">
-						<a :href="lastGoods.moreUrl" target="_blank">
-							<div class="desc">
-								<h3 class="title">
-									浏览更多
-								</h3>
-								<span class="price hot">
-									热门
-								</span>
-							</div>
-							<i class="fa fa-arrow-circle-right fa-4x icon-arrow"></i>
-						</a>
-					</li>
-			</template>
-			</ul>
 		</ul>
 	</div>
 </template>
@@ -88,7 +57,7 @@ export default {
 <style>
 .goods-right {
 	float: left;
-	width: 992px;
+	width: 1392px;
 	height: 628px;
 	.goods-right-content {
 		display: flex;

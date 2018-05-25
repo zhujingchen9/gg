@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 	<div class="video-container">
 		<div class="header clearfix">
 			<h2 class="title">{{title}}</h2>
@@ -173,4 +173,4 @@ export default {
 		background: #333;
 	}
 }
-</style>
+</style> -->

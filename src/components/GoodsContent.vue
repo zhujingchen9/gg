@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
 	<div class="product-container">
 		<goods-header :title="title"></goods-header>
 		<div class="box-bd">
@@ -77,4 +77,4 @@ export default {
 	height: auto;
 	margin: 0 auto;
 }
-</style>
+</style> -->

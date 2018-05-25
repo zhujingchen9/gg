@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="boxs-container">
     <div class="boxs">
       <div class="boxs-top clearfix">
@@ -205,4 +205,4 @@ export default {
   }
 }
 
-</style>
+</style> -->
